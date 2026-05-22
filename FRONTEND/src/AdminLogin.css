@@ -1,0 +1,123 @@
+* {
+  box-sizing: border-box;
+}
+
+.admin-login-screen {
+  min-height: 100vh;
+  width: 100vw;
+  background: #f6f7fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  padding: 24px;
+}
+
+.admin-login-box {
+  width: 100%;
+  max-width: 430px;
+  background: white;
+  padding: 38px;
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(16, 24, 40, 0.14);
+  border: 1px solid #eef0f5;
+  text-align: left;
+}
+
+.admin-login-logo {
+  width: 190px;
+  margin: 0 auto 26px;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-login-logo img {
+  width: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.admin-login-box h1 {
+  text-align: center;
+  font-size: 30px;
+  color: #101828;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.admin-login-box p {
+  text-align: center;
+  color: #667085;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+.admin-login-box label {
+  display: block;
+  color: #344054;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.admin-login-box input {
+  width: 100%;
+  display: block;
+  border: 1px solid #d0d5dd;
+  border-radius: 12px;
+  padding: 14px 15px;
+  margin-bottom: 22px;
+  font-size: 15px;
+  color: #101828;
+  outline: none;
+  background: white;
+}
+
+.admin-login-box input:focus {
+  border-color: #2f448e;
+  box-shadow: 0 0 0 4px rgba(47, 68, 142, 0.12);
+}
+
+.admin-login-box button {
+  width: 100%;
+  display: block;
+  border: none;
+  background: #2f448e;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.admin-login-box button:hover {
+  background: #253775;
+}
+
+.admin-login-error {
+  background: #fff1f1;
+  color: #b42318;
+  border: 1px solid #fecdca;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-weight: 650;
+  font-size: 14px;
+  text-align: left;
+}
+
+.back-kiosk-link {
+  display: block;
+  margin-top: 18px;
+  text-align: center;
+  color: #2f448e;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.back-kiosk-link:hover {
+  text-decoration: underline;
+}
