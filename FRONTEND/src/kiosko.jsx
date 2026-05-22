@@ -11,9 +11,10 @@ const Kiosko = () => {
 
   const videoRef = useRef();
   const canvasRef = useRef();
+  const faceMatcherRef = useRef(null);
   const [modelosListos, setModelosListos] = useState(false);
   const [empleadosRegistrados, setEmpleadosRegistrados] = useState([]);
-  const [statusTexto, setstatusTexto] = useState('Cargando IA...');
+  const [statusTexto, setStatusTexto] = useState('Cargando IA...');
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -31,23 +32,47 @@ const Kiosko = () => {
         await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
         await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
         setModelosListos(true);
-        setstatusTexto('Por favor, mire a la camara');
+        setStatusTexto('Por favor, mire a la camara');
 
         encenderWebCam();
 
         await cargarEmpleadosDesdeBackend();
+
+        // Recargar empleados cada 5 segundos para detectar nuevos registros sin reiniciar
+        window.empleadosInterval = setInterval(() => {
+          cargarEmpleadosDesdeBackend();
+        }, 5000);
+
       } catch (error) {
         console.error("Error inicializando FaceID:", error);
         setStatusTexto('Error al cargar los datos biometricos');
       }
     };
     inicializarFACEID();
+
+    return () => {
+      if (window.reconocimientoInterval) {
+        clearInterval(window.reconocimientoInterval);
+      }
+      if (window.empleadosInterval) {
+        clearInterval(window.empleadosInterval);
+      }
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject;
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+    };
   }, []);
 
   const encenderWebCam = () => {
     navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
       .then(stream => {
-        if (videoRef.current) videoRef.current.srcObject = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          // Forzar reproducción por si autoPlay falla
+          videoRef.current.play().catch(e => console.error("Error reproduciendo video:", e));
+        }
       })
       .catch(err => {
         console.error("Error al abrir la camara:", err);
@@ -58,19 +83,26 @@ const Kiosko = () => {
 
   const cargarEmpleadosDesdeBackend = async () => {
     try {
-      const response = await fetch('http://localhost:3000/empleados');
+      console.log('[FaceID] Cargando empleados desde backend...');
+      const response = await fetch('http://localhost:5000/api/empleados');
       const data = await response.json();
+      console.log('[FaceID] Empleados recibidos:', data.length, data.map(e => e.nombre));
 
       const mapeados = data.map(emp => {
         const descFloats = new Float32Array(JSON.parse(emp.descriptores_faciales));
-        return new faceapi.LabeledFaceDescriptor(emp.id.toString(), [descFloats]);
+        return new faceapi.LabeledFaceDescriptors(emp.id.toString(), [descFloats]);
       });
+      if (mapeados.length > 0) {
+        faceMatcherRef.current = new faceapi.FaceMatcher(mapeados, 0.7);
+        console.log('[FaceID] FaceMatcher listo con', mapeados.length, 'empleados');
+      } else {
+        console.warn('[FaceID] No hay empleados en la BD todavía');
+      }
       setEmpleadosRegistrados(mapeados);
     } catch (error) {
-      console.error("Error al cargar los empleados:", error);
+      console.error("[FaceID] Error al cargar los empleados:", error);
     }
   };
-
 
   const iniciarReconocimiento = () => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -79,57 +111,63 @@ const Kiosko = () => {
       clearInterval(window.reconocimientoInterval);
     }
 
-    const displaySize = { width: videoRef.current.videoWidth, height: videoRef.current.videoHeight };
-    if (displaySize.width === 0) return;
+    // Usamos el tamaño real renderizado del canvas (600x400 según CSS)
+    // para que los puntos y el cuadro de rastreo coincidan exactamente con tu cara
+    const rect = canvasRef.current.getBoundingClientRect();
+    const displaySize = { width: rect.width || 600, height: rect.height || 400 };
 
     faceapi.matchDimensions(canvasRef.current, displaySize);
 
-    const faceMatcher = empleadosRegistrados.length > 0
-      ? new faceapi.FaceMatcher(empleadosRegistrados, 0.6)
-      : null;
-
     let ultimaAsistencia = 0;
+    let statusBloqueado = false; // Evita sobreescribir el mensaje de éxito
 
     window.reconocimientoInterval = setInterval(async () => {
       if (!videoRef.current || !canvasRef.current || videoRef.current.paused || videoRef.current.ended) return;
 
-      const deteccion = await faceapi.detectSingleFace(videoRef.current)
-        .withFaceLandmarks()
-        .withFaceDescriptor();
+      try {
+        const deteccion = await faceapi.detectSingleFace(videoRef.current)
+          .withFaceLandmarks()
+          .withFaceDescriptor();
 
-      const ctx = canvasRef.current.getContext('2d');
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        const ctx = canvasRef.current.getContext('2d');
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-      if (deteccion) {
-        const resizedDeteccion = faceapi.resizeResults(deteccion, displaySize);
+        if (deteccion) {
+          const resizedDeteccion = faceapi.resizeResults(deteccion, displaySize);
 
-        // Draw tracking lines on canvas
-        faceapi.draw.drawDetections(canvasRef.current, resizedDeteccion);
-        faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDeteccion);
+          // Draw tracking lines on canvas
+          faceapi.draw.drawDetections(canvasRef.current, resizedDeteccion);
+          faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDeteccion);
 
-        if (faceMatcher) {
-          const resultado = faceMatcher.findBestMatch(deteccion.descriptor);
+          if (faceMatcherRef.current) {
+            const resultado = faceMatcherRef.current.findBestMatch(deteccion.descriptor);
 
-          const box = resizedDeteccion.detection.box;
-          const drawBox = new faceapi.draw.DrawBox(box, { label: resultado.label });
-          drawBox.draw(canvasRef.current);
+            const box = resizedDeteccion.detection.box;
+            const drawBox = new faceapi.draw.DrawBox(box, { label: resultado.label });
+            drawBox.draw(canvasRef.current);
 
-          if (resultado.label !== 'unknown') {
-            setStatusTexto(`Identificando..`);
-            
-            const ahora = Date.now();
-            if (ahora - ultimaAsistencia > 3000) {
-              enviarAsistenciaAlBackend(resultado.label);
-              ultimaAsistencia = ahora;
+            if (resultado.label !== 'unknown') {
+              if (!statusBloqueado) setStatusTexto(`Identificando..`);
+
+              const ahora = Date.now();
+              if (ahora - ultimaAsistencia > 8000) {
+                statusBloqueado = true;
+                enviarAsistenciaAlBackend(resultado.label);
+                ultimaAsistencia = ahora;
+                // Mostrar el mensaje de éxito por 4 segundos
+                setTimeout(() => { statusBloqueado = false; }, 8000);
+              }
+            } else {
+              setStatusTexto('Rostro no reconocido');
             }
           } else {
-            setStatusTexto('Rostro no reconocido');
+            setStatusTexto('Rostro detectado (esperando DB)');
           }
         } else {
-          setStatusTexto('Rostro detectado (esperando DB)');
+          setStatusTexto('Por favor, mire a la camara');
         }
-      } else {
-        setStatusTexto('Por favor, mire a la camara');
+      } catch (err) {
+        console.error("Error en detección:", err);
       }
     }, 100);
   };
@@ -137,14 +175,14 @@ const Kiosko = () => {
   //Asistencia back
   const enviarAsistenciaAlBackend = async (empleadoId) => {
     try {
-      const res = await fetch('http://localhost:300/api/asistencia', {
+      const res = await fetch('http://localhost:5000/api/asistencia', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ empleadoId })
       });
       const data = await res.json();
       if (data.status === 'success') {
-        setStatusTexto(`¡Asistencia Exitosa! ID: ${empleadoId}`);
+        setStatusTexto(`¡Entrada Registrada! Bienvenido ${data.nombre}`);
       }
     } catch (error) {
       console.error("Error al registrar asistencia:", error);
@@ -230,6 +268,16 @@ const Kiosko = () => {
             <span></span>
             <span></span>
           </div>
+          <button
+            className="manual-entry-btn"
+            disabled={
+              statusTexto !== 'Camara no detectada' &&
+              statusTexto !== 'Error al cargar los datos biometricos' &&
+              statusTexto !== 'Rostro no reconocido'
+            }
+          >
+            Número de empleado
+          </button>
         </div>
       </main>
 

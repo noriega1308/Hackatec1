@@ -333,6 +333,36 @@ body {
   }
 }
 
+/* Manual Entry Button */
+.manual-entry-btn {
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  background-color: transparent;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  border-radius: 30px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.manual-entry-btn:hover:not(:disabled) {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 15px var(--accent-color-dim);
+}
+
+.manual-entry-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: var(--text-secondary);
+  color: var(--text-secondary);
+}
+
 /* Footer Navigation */
 .kiosko-footer {
   padding: 2rem;
