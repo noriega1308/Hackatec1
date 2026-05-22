@@ -1,0 +1,49 @@
+
+CREATE DATABASE roocel_servicios;
+
+USE roocel_servicios;
+
+CREATE TABLE DEPARTAMENTOS (
+id_departamento INT AUTO_INCREMENT NOT NULL,
+nombre_departamento VARCHAR(50) NOT NULL,
+CONSTRAINT PK_depa PRIMARY KEY (id_departamento)
+);
+
+
+CREATE TABLE ROL (
+id_rol INT AUTO_INCREMENT NOT NULL,
+nombre_rol VARCHAR(50) NOT NULL,
+CONSTRAINT pk_rol PRIMARY KEY (id_rol)
+);
+
+
+
+CREATE TABLE usuarios (
+  id_usuario        INT AUTO_INCREMENT NOT NULL,
+  nombre            VARCHAR(50) NOT NULL,
+  apellido_paterno  VARCHAR(50) NOT NULL,
+  apellido_materno  VARCHAR(50),
+  email             VARCHAR(100) UNIQUE NOT NULL,
+  contrasena        VARCHAR(255) NOT NULL,
+  datos_faciales    TEXT,
+  id_departamento   INT,
+  id_rol            INT,
+
+  CONSTRAINT PK_usuario PRIMARY KEY (id_usuario),
+  CONSTRAINT FK_departamento FOREIGN KEY (id_departamento) REFERENCES departamentos(id_departamento),
+  CONSTRAINT FK_rol FOREIGN KEY (id_rol) REFERENCES rol(id_rol)
+);
+
+
+CREATE TABLE registros(
+  id_registro   INT AUTO_INCREMENT NOT NULL,
+  id_usuario    INT NOT NULL,
+  fecha         DATE NOT NULL,
+  hora          DATETIME NOT NULL,
+  tipo          ENUM('entrada','salida_comida','regreso_comida','salida') NOT NULL,
+
+  CONSTRAINT PK_registro PRIMARY KEY (id_registro),
+  CONSTRAINT FK_usuario_registro FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+);
+
+
