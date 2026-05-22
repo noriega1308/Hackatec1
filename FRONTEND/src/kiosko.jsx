@@ -291,7 +291,7 @@ const Kiosko = () => {
       {/* Login Button (Bottom Right) */}
       <button
         className="login-action-btn"
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/admin')}
         title="Iniciar Sesión"
       >
         <span>Iniciar sesión</span>
