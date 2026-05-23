@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./App.css";
 
-const API_URL = "import.meta.env.VITE_API_URL";
+const API_URL = import.meta.env.VITE_API_URL;
 const PAGE_SIZE = 6;
 const MINUTOS_JORNADA_ESPERADA = 9 * 60;
 const HORA_LIMITE_ENTRADA = "08:10";

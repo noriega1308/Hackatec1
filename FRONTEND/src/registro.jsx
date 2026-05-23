@@ -84,7 +84,7 @@ const Registro = () => {
         setStatusTexto('Registrando en base de datos de ROCEEL...');
 
         try {
-            const data  = await fetch('import.meta.env.VITE_API_URL/api/empleados', {
+           const res = await fetch(`${API_URL}/api/empleados`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
