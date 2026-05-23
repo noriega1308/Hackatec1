@@ -273,7 +273,7 @@ const Kiosko = () => {
       const data = await res.json();
       console.log('[Asistencia] Respuesta backend:', res.status, data);
 
-      if (data.status === 'success') {.
+      if (data.status === 'success') {
         const generarMensaje = mensajesPorTipo[data.tipo];
         const mensaje = generarMensaje
           ? generarMensaje(data.nombre)
