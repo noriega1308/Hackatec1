@@ -1398,6 +1398,81 @@ body {
   color: #9fb3c8;
 }
 
+.chart-tabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 4px;
+  border: 1px solid rgba(31, 199, 153, 0.18);
+  background: rgba(13, 22, 34, 0.86);
+}
+
+.chart-tabs button {
+  border: none;
+  background: transparent;
+  color: #9fb3c8;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.chart-tabs button.active,
+.chart-tabs button:hover {
+  background: rgba(31, 199, 153, 0.14);
+  color: #2df19e;
+}
+
+.bar-count {
+  margin-bottom: 10px;
+  color: #dffef6;
+  font-size: 14px;
+  font-weight: 900;
+  text-shadow: 0 0 12px rgba(31, 199, 153, 0.36);
+}
+
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 18px 24px;
+  border-top: 1px solid rgba(31, 199, 153, 0.14);
+  color: #9fb3c8;
+  font-weight: 800;
+}
+
+.pagination-bar button {
+  border: 1px solid rgba(31, 199, 153, 0.22);
+  background: rgba(31, 199, 153, 0.08);
+  color: #dffef6;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.pagination-bar button:hover:not(:disabled) {
+  background: rgba(31, 199, 153, 0.16);
+  color: #2df19e;
+}
+
+.pagination-bar button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.absences-table-wrapper {
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.absences-table-wrapper table {
+  width: 100%;
+  min-width: 640px;
+}
+
 @media (max-width: 760px) {
   .sidebar {
     position: relative;
@@ -1411,5 +1486,14 @@ body {
 
   .main-content {
     padding: 22px 16px 28px;
+  }
+
+  .chart-tabs,
+  .pagination-bar {
+    width: 100%;
+  }
+
+  .pagination-bar {
+    justify-content: space-between;
   }
 }
