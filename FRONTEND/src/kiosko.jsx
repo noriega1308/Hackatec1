@@ -3,7 +3,7 @@ import * as faceapi from 'face-api.js';
 import { useNavigate } from 'react-router-dom';
 import { FiWifi, FiLogIn } from 'react-icons/fi';
 import { BsHexagonFill } from 'react-icons/bs';
-import './Kiosko.css';
+import './kiosko.css';
 
 const Kiosko = () => {
   const [time, setTime] = useState(new Date());

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiUserPlus, FiMonitor, FiGrid, FiArrowLeft, FiCamera } from 'react-icons/fi';
 import { BsHexagonFill } from 'react-icons/bs';
 import * as faceapi from 'face-api.js';
-import './Kiosko.css'; // Reutilizamos tus estilos base para mantener la identidad visual
+import './kiosko.css'; // Reutilizamos tus estilos base para mantener la identidad visual
 
 const Registro = () => {
     const navigate = useNavigate();
