@@ -87,7 +87,7 @@ function RegistroFacial({ onLogout }) {
     setStatusTexto("Guardando en la base de datos...");
 
     try {
-      const data  = await fetch(`${API_URL}/api/empleados/${seleccionado.id}`, {
+      const res = await fetch(`${API_URL}/api/empleados/${seleccionado.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ descriptores_faciales: descriptoresString }),

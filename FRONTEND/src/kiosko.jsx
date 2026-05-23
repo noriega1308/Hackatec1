@@ -230,7 +230,7 @@ const Kiosko = () => {
     setCargandoManual(true);
     setErrorManual('');
     try {
-      const res = await fetch('`${API_URL}/api/asistencia', {
+      const res = await fetch(`${API_URL}/api/asistencia`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ empleadoId: id })
@@ -264,7 +264,7 @@ const Kiosko = () => {
   //Asistencia back
   const enviarAsistenciaAlBackend = async (empleadoId, onMensajeListo) => {
     try {
-      const res = await fetch('${API_URL}/api/asistencia', {
+      const res = await fetch(`${API_URL}/api/asistencia`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ empleadoId })
