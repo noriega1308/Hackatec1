@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiWifi, FiLogIn } from 'react-icons/fi';
 import { BsHexagonFill } from 'react-icons/bs';
 import './kiosko.css';
-
+const API_URL = import.meta.env.VITE_API_URL;
 const Kiosko = () => {
   const [time, setTime] = useState(new Date());
   const navigate = useNavigate();

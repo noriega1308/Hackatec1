@@ -4,7 +4,7 @@ import { FiUserPlus, FiMonitor, FiGrid, FiArrowLeft, FiCamera } from 'react-icon
 import { BsHexagonFill } from 'react-icons/bs';
 import * as faceapi from 'face-api.js';
 import './kiosko.css'; // Reutilizamos tus estilos base para mantener la identidad visual
-
+const API_URL = import.meta.env.VITE_API_URL;
 const Registro = () => {
     const navigate = useNavigate();
     const videoRef = useRef();
@@ -84,7 +84,7 @@ const Registro = () => {
         setStatusTexto('Registrando en base de datos de ROCEEL...');
 
         try {
-            const res = await fetch('import.meta.env.VITE_API_URL/api/empleados', {
+            const data  = await fetch('import.meta.env.VITE_API_URL/api/empleados', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowLeft, FiEye, FiLock, FiMail, FiZap } from "react-icons/fi";
 import "./AdminLogin.css";
-
+const API_URL = import.meta.env.VITE_API_URL;
 function AdminLogin({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
