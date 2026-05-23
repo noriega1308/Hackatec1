@@ -52,7 +52,7 @@ function RegistroFacial({ onLogout }) {
       .then((stream) => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          videoRef.current.play().catch(() => {});
+          videoRef.current.play().catch(() => { });
         }
       })
       .catch(() => setStatusTexto("Cámara no detectada."));

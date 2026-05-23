@@ -2,8 +2,7 @@
   "name": "erick-cine-servidor",
   "version": "1.0.0",
   "description": "",
-  "main": "server/index.js",
-  "type": "module",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon server/index.js",
     "start": "node server/index.js",
