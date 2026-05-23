@@ -1080,3 +1080,336 @@ input {
     grid-template-columns: 1fr;
   }
 }
+
+/* ROCEEL DARK ADMIN THEME */
+
+body {
+  background: #050b12;
+}
+
+.dashboard-layout {
+  background:
+    linear-gradient(rgba(31, 199, 153, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 199, 153, 0.045) 1px, transparent 1px),
+    radial-gradient(circle at 18% 16%, rgba(31, 199, 153, 0.13), transparent 24%),
+    radial-gradient(circle at 86% 72%, rgba(70, 99, 160, 0.16), transparent 34%),
+    #050b12;
+  background-size: 72px 72px, 72px 72px, auto, auto, auto;
+  color: #f7fbff;
+}
+
+.sidebar {
+  background: rgba(6, 13, 23, 0.96);
+  border-right: 1px solid rgba(31, 199, 153, 0.24);
+  box-shadow: 18px 0 44px rgba(0, 0, 0, 0.28);
+}
+
+.brand {
+  min-height: 118px;
+  padding: 28px 22px 18px;
+  border-bottom: 1px solid rgba(31, 199, 153, 0.16);
+}
+
+.sidebar-wordmark {
+  color: #dffef6;
+  font-size: 28px;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-indent: 0.18em;
+  text-shadow: 0 0 22px rgba(31, 199, 153, 0.48);
+}
+
+.side-menu {
+  margin-top: 18px;
+}
+
+.side-menu a,
+.side-menu button {
+  color: #9fb3c8;
+  padding: 17px 24px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border-left: 3px solid transparent;
+}
+
+.side-menu a:hover,
+.side-menu a.active,
+.side-menu button:hover,
+.side-menu button.active {
+  background: rgba(31, 199, 153, 0.09);
+  border-left-color: #18c994;
+  color: #f7fbff;
+}
+
+.side-menu span {
+  color: #18c994;
+  font-size: 18px;
+}
+
+.profile-box {
+  border-top: 1px solid rgba(31, 199, 153, 0.18);
+  background: rgba(31, 199, 153, 0.04);
+}
+
+.profile-avatar {
+  background: rgba(24, 201, 148, 0.14);
+  border: 1px solid rgba(31, 199, 153, 0.38);
+  color: #29e39f;
+  border-radius: 8px;
+}
+
+.profile-box p {
+  color: #9fb3c8;
+}
+
+.main-content {
+  background: transparent;
+  color: #f7fbff;
+  padding: 32px 38px 42px;
+}
+
+.page-header {
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(31, 199, 153, 0.16);
+}
+
+.page-header h1 {
+  color: #ffffff;
+  font-size: 34px;
+  letter-spacing: 0;
+}
+
+.page-header p,
+.card-header p,
+.stat-card span,
+.employee-cell p,
+.select-user-row p,
+.attendance-legend,
+.chart-y-axis {
+  color: #9fb3c8;
+}
+
+.stat-card,
+.table-card,
+.chart-card,
+.filters-card,
+.biometric-card {
+  background: rgba(7, 14, 24, 0.92);
+  border: 1px solid rgba(31, 199, 153, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.26);
+}
+
+.stat-card {
+  min-height: 134px;
+}
+
+.stat-card p,
+.filter-group label {
+  color: #a9bdd2;
+  letter-spacing: 0.1em;
+}
+
+.stat-card h2 {
+  color: #29e39f;
+  text-shadow: 0 0 18px rgba(31, 199, 153, 0.2);
+}
+
+.orange-text {
+  color: #f2c548 !important;
+}
+
+.green-text {
+  color: #29e39f !important;
+}
+
+.stat-icon {
+  border-radius: 8px;
+  background: rgba(31, 199, 153, 0.1);
+  border: 1px solid rgba(31, 199, 153, 0.22);
+  color: #29e39f;
+}
+
+.stat-icon.orange {
+  background: rgba(242, 197, 72, 0.1);
+  border-color: rgba(242, 197, 72, 0.24);
+  color: #f2c548;
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(31, 199, 153, 0.14);
+}
+
+.card-header h2 {
+  color: #ffffff;
+}
+
+.live-badge {
+  color: #29e39f;
+}
+
+.live-badge span {
+  background: #2df19e;
+  box-shadow: 0 0 14px rgba(45, 241, 158, 0.75);
+}
+
+.table-wrapper {
+  background: transparent;
+}
+
+.dashboard-layout thead,
+.dashboard-layout th {
+  background: #0d1622;
+}
+
+.dashboard-layout th {
+  color: #9fb3c8;
+  border-bottom: 1px solid rgba(31, 199, 153, 0.16);
+}
+
+.dashboard-layout td {
+  color: #d9e7f3;
+  background: rgba(7, 14, 24, 0.72);
+  border-bottom: 1px solid rgba(159, 179, 200, 0.12);
+}
+
+.dashboard-layout tr:hover td {
+  background: rgba(31, 199, 153, 0.07);
+}
+
+.employee-cell strong,
+.details-panel strong,
+.select-user-row strong {
+  color: #f7fbff;
+}
+
+.avatar {
+  background: rgba(24, 201, 148, 0.16);
+  border: 1px solid rgba(31, 199, 153, 0.36);
+  color: #2df19e;
+  border-radius: 8px;
+}
+
+.face-badge.registered,
+.hours-badge.worked,
+.hours-badge.extra {
+  background: rgba(31, 199, 153, 0.12);
+  color: #29e39f;
+  border: 1px solid rgba(31, 199, 153, 0.28);
+}
+
+.face-badge.pending {
+  background: rgba(242, 197, 72, 0.12);
+  color: #f2c548;
+  border: 1px solid rgba(242, 197, 72, 0.3);
+}
+
+.details-btn,
+.export-actions button,
+.capture-btn {
+  background: #18bd8a;
+  color: #04100d;
+  border-radius: 8px;
+  font-weight: 950;
+  box-shadow: 0 12px 24px rgba(24, 189, 138, 0.18);
+}
+
+.details-btn:hover,
+.export-actions button:hover,
+.capture-btn:hover {
+  background: #27d79f;
+}
+
+.export-actions button:first-child,
+.export-actions button:first-child:hover {
+  background: #0f926d;
+}
+
+.details-row td {
+  background: rgba(31, 199, 153, 0.05) !important;
+}
+
+.details-panel,
+.details-panel div,
+.select-user-row {
+  background: rgba(13, 22, 34, 0.88);
+  border: 1px solid rgba(31, 199, 153, 0.16);
+  border-radius: 8px;
+}
+
+.details-panel span {
+  color: #9fb3c8;
+}
+
+.filter-group select,
+.filter-group input {
+  background: #111821;
+  border: 1px solid rgba(168, 189, 210, 0.22);
+  border-radius: 8px;
+  color: #f7fbff;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+  border-color: rgba(31, 199, 153, 0.78);
+  box-shadow: 0 0 0 4px rgba(31, 199, 153, 0.12);
+}
+
+.grid-line {
+  border-top-color: rgba(159, 179, 200, 0.16);
+}
+
+.attendance-bar {
+  background: linear-gradient(180deg, #2df19e, #118f6b);
+  box-shadow: 0 0 20px rgba(31, 199, 153, 0.25);
+}
+
+.legend-green {
+  background: #29e39f;
+}
+
+.legend-red {
+  background: #e77973;
+}
+
+.legend-yellow {
+  background: #f2c548;
+}
+
+.employee-select-list {
+  background: transparent;
+}
+
+.select-user-row.selected,
+.select-user-row:hover {
+  border-color: rgba(31, 199, 153, 0.54);
+  background: rgba(31, 199, 153, 0.09);
+}
+
+.biometric-dropzone {
+  background:
+    linear-gradient(rgba(31, 199, 153, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 199, 153, 0.06) 1px, transparent 1px),
+    #081320;
+  background-size: 42px 42px;
+  border: 1px solid rgba(31, 199, 153, 0.24);
+  border-radius: 8px !important;
+  color: #9fb3c8;
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid rgba(31, 199, 153, 0.24);
+  }
+
+  .brand {
+    min-height: auto;
+  }
+
+  .main-content {
+    padding: 22px 16px 28px;
+  }
+}

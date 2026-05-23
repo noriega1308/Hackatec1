@@ -8,7 +8,22 @@ import Registro from "./registro";
 import RegistroFacial from "./RegistroFacial";
 
 function App() {
-  const [adminLoggedIn, setAdminLoggedIn] = useState(false);
+  const [adminUser, setAdminUser] = useState(() => {
+    const savedUser = localStorage.getItem("roceel_admin_user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const adminLoggedIn = Boolean(adminUser);
+
+  function handleLogin(usuario) {
+    localStorage.setItem("roceel_admin_user", JSON.stringify(usuario));
+    setAdminUser(usuario);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("roceel_admin_user");
+    setAdminUser(null);
+  }
 
   return (
     <Routes>
@@ -28,7 +43,7 @@ function App() {
           adminLoggedIn ? (
             <Navigate to="/admin/dashboard" replace />
           ) : (
-            <AdminLogin onLogin={() => setAdminLoggedIn(true)} />
+            <AdminLogin onLogin={handleLogin} />
           )
         }
       />
@@ -38,7 +53,7 @@ function App() {
         path="/admin/dashboard"
         element={
           adminLoggedIn ? (
-            <Dashboard onLogout={() => setAdminLoggedIn(false)} />
+            <Dashboard adminUser={adminUser} onLogout={handleLogout} />
           ) : (
             <Navigate to="/admin" replace />
           )
@@ -50,7 +65,7 @@ function App() {
         path="/admin/registro-facial"
         element={
           adminLoggedIn ? (
-            <RegistroFacial onLogout={() => setAdminLoggedIn(false)} />
+            <RegistroFacial adminUser={adminUser} onLogout={handleLogout} />
           ) : (
             <Navigate to="/admin" replace />
           )

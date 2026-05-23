@@ -236,7 +236,7 @@ function Dashboard({ onLogout }) {
       <aside className="sidebar">
         <div>
           <div className="brand">
-            <img src="/roceel-logo.png" alt="ROCEEL Logo" className="logo-img" />
+            <div className="sidebar-wordmark">ROCEEL</div>
           </div>
 
           <nav className="side-menu">
