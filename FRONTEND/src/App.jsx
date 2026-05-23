@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import AdminLogin from "./AdminLogin";
 import Dashboard from "./Dashboard";
-import Kiosko from "./Kiosko";
+import Kiosko from "./kiosko";
 import Registro from "./registro";
 import RegistroFacial from "./RegistroFacial";
 
