@@ -84,7 +84,7 @@ const Registro = () => {
         setStatusTexto('Registrando en base de datos de ROCEEL...');
 
         try {
-            const res = await fetch('http://localhost:5000/api/empleados', {
+            const res = await fetch('http://localhost:4000/api/empleados', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

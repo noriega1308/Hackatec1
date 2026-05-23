@@ -3,7 +3,8 @@ import {
     createEmpleadoFacial,
     createUsuario,
     getEmpleadosFaciales,
-    getUsuario
+    getUsuario,
+    updateEmpleadoFacial
 } from "../controllers/usuarios.controllers.js";
 
 
@@ -13,6 +14,7 @@ router.post('/login',getUsuario);
 router.post('/registro', createUsuario)
 router.get('/api/empleados', getEmpleadosFaciales);
 router.post('/api/empleados', createEmpleadoFacial);
+router.put('/api/empleados/:id', updateEmpleadoFacial);
 
 
 export default router;

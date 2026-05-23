@@ -1,65 +1,123 @@
 import { pool } from "../db.js";
 
-export const getUsuario = async (req,res) => {
+export const getUsuario = async (req, res) => {
     try {
-        console.log("Valor del email: ", req.body.email)
-        const [result] = await pool.query("select id_usuario, nombre, apellido_paterno, apellido_materno, datos_faciales, id_departamento, id_rol from usuarios where email = ? and password = ?", [req.body.email,req.body.password]);
+        const { email, password } = req.body;
 
-        if (result.length <= 0) {
-            return res.status(400).json({message : "Usuario o Contraseña Incorrectos" });
+        if (!email || !password) {
+            return res.status(400).json({ message: "Correo y contrasena son requeridos" });
         }
 
-        res.json(result)
+        const [result] = await pool.query(
+            `
+            SELECT
+                id_usuario,
+                nombre,
+                apellido_paterno,
+                apellido_materno,
+                email,
+                datos_faciales,
+                id_departamento,
+                id_rol
+            FROM usuarios
+            WHERE email = ?
+              AND password = ?
+            LIMIT 1
+            `,
+            [email, password]
+        );
+
+        if (result.length <= 0) {
+            return res.status(401).json({ message: "Usuario o contrasena incorrectos" });
+        }
+
+        res.json({
+            message: "Login correcto",
+            usuario: result[0]
+        });
     } catch (error) {
-    console.log("ERROR REAL EN LOGIN:", error);
-    return res.status(500).json({ message: "Error de Conexion" });
-}
-    
-}
-
- const existeEmail = async (email) => {
-    console.log("Valor de email en funcion existeEmail", email);
-    const [result] = await pool.query('SELECT * FROM usuarios WHERE email = ?',[email]);
-    console.log("Longitud de result: ",result.length)
-    if (result.length > 0) {
-        return true
+        console.log("ERROR REAL EN LOGIN:", error);
+        res.status(500).json({ message: "Error de conexion" });
     }
-    return false
-}
+};
 
-export const createUsuario = async (req,res) =>{
+const existeEmail = async (email) => {
+    const [result] = await pool.query(
+        "SELECT id_usuario FROM usuarios WHERE email = ?",
+        [email]
+    );
+
+    return result.length > 0;
+};
+
+export const createUsuario = async (req, res) => {
     try {
-        const {nombre,email,password,apellido_paterno,apellido_materno} = req.body;
+        const {
+            nombre,
+            email,
+            password,
+            apellido_paterno,
+            apellido_materno,
+            id_departamento,
+            id_rol
+        } = req.body;
+
+        if (!nombre || !email || !password || !apellido_paterno) {
+            return res.status(400).json({ message: "Faltan datos requeridos" });
+        }
 
         const emailExiste = await existeEmail(email);
 
-        if(emailExiste){
-            console.log("va a regresar que el email Ya esiste", email);
-            return res.status(400).json({message: "Ya existe el email"})
+        if (emailExiste) {
+            return res.status(400).json({ message: "Ya existe el email" });
         }
-        const [result] = await pool.query('INSERT INTO usuarios (nombre, email, password, idtipousuario, idestatus, apellido_paterno, apellido_materno) VALUES (?, ?, ?, 2, 1, ?, ?)',
-  [nombre,email, password, apellido_paterno, apellido_materno]);
 
-    res.json({ insertID: result.insertId });
+        const [result] = await pool.query(
+            `
+            INSERT INTO usuarios (
+                nombre,
+                email,
+                password,
+                apellido_paterno,
+                apellido_materno,
+                id_departamento,
+                id_rol
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            `,
+            [
+                nombre,
+                email,
+                password,
+                apellido_paterno,
+                apellido_materno || null,
+                id_departamento || null,
+                id_rol || 2
+            ]
+        );
+
+        res.status(201).json({ insertID: result.insertId });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({error: "Error al registrar el Usuario"})
+        console.log("Error en createUsuario:", error);
+        res.status(500).json({ message: "Error al registrar el usuario" });
     }
-}
+};
 
 export const getEmpleadosFaciales = async (req, res) => {
     try {
         const [result] = await pool.query(`
             SELECT
-                id_usuario AS id,
-                nombre,
-                apellido_paterno,
-                apellido_materno,
-                datos_faciales AS descriptores_faciales,
-                id_departamento,
-                id_rol
-            FROM usuarios
-            WHERE datos_faciales IS NOT NULL
+                u.id_usuario AS id,
+                u.nombre,
+                u.apellido_paterno,
+                u.apellido_materno,
+                u.email,
+                u.datos_faciales AS descriptores_faciales,
+                u.id_departamento,
+                u.id_rol,
+                d.nombre_departamento AS departamento
+            FROM usuarios u
+            LEFT JOIN departamentos d ON u.id_departamento = d.id_departamento
         `);
 
         res.json(result);
@@ -136,3 +194,27 @@ export const createEmpleadoFacial = async (req, res) => {
     }
 };
 
+export const updateEmpleadoFacial = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { descriptores_faciales } = req.body;
+
+        if (!descriptores_faciales) {
+            return res.status(400).json({ message: "Datos faciales son requeridos" });
+        }
+
+        const [result] = await pool.query(
+            "UPDATE usuarios SET datos_faciales = ? WHERE id_usuario = ?",
+            [descriptores_faciales, id]
+        );
+
+        if (result.affectedRows <= 0) {
+            return res.status(404).json({ message: "Empleado no encontrado" });
+        }
+
+        res.json({ status: "success", message: "Rostro actualizado correctamente" });
+    } catch (error) {
+        console.log("Error en updateEmpleadoFacial:", error);
+        res.status(500).json({ message: "Error al actualizar rostro" });
+    }
+};
