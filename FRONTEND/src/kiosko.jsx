@@ -91,7 +91,7 @@ const Kiosko = () => {
   const cargarEmpleadosDesdeBackend = async () => {
     try {
       console.log('[FaceID] Cargando empleados desde backend...');
-      const response = await fetch('http://localhost:4000/api/empleados');
+      const response = await fetch('import.meta.env.VITE_API_URL/api/empleados');
       const data = await response.json();
       console.log('[FaceID] Empleados recibidos:', data.length, data.map(e => e.nombre));
 
@@ -230,7 +230,7 @@ const Kiosko = () => {
     setCargandoManual(true);
     setErrorManual('');
     try {
-      const res = await fetch('http://localhost:4000/api/asistencia', {
+      const res = await fetch('import.meta.env.VITE_API_URL/api/asistencia', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ empleadoId: id })
@@ -264,7 +264,7 @@ const Kiosko = () => {
   //Asistencia back
   const enviarAsistenciaAlBackend = async (empleadoId, onMensajeListo) => {
     try {
-      const res = await fetch('http://localhost:4000/api/asistencia', {
+      const res = await fetch('import.meta.env.VITE_API_URL/api/asistencia', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ empleadoId })
